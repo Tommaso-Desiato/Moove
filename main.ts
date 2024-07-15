@@ -1,90 +1,88 @@
-interface IMezzo {
-  tipo:"bici" | "scooter" | "monopattino";
+interface IVehicle {
+  type:"bike" | "scooter" | "moped";
   id:number;
-  stato:"disponibile" | "in uso";
-  assegnaUtente(utente: IUtente): void;
+  status:"available" | "in use";
+  assignUser(user: IUser): void;
 }
 
-interface IUtente {
-  nome: string;
-  cognome: string;
+interface IUser {
+  name: string;
+  surname: string;
   email: string;
-  pagamento: string;
-  prenotaMezzo(mezzo: IMezzo):void;
+  payment: string;
+  reserveVehicle(vehicle: IVehicle):void;
 }
 
-interface ICitta {
-  nome:string;
-  mezziDisponibili: IMezzo[];
-  aggiungiMezzo(mezzo: IMezzo): void;
+interface ICity {
+  name:string;
+  availableVehicles: IVehicle[];
+  addVehicle(vehicle: IVehicle): void;
 }
 
-class Mezzo implements IMezzo {
-  tipo:"bici" | "scooter" | "monopattino";
+class Vehicle implements IVehicle {
+  type:"bike" | "scooter" | "moped";
   id:number;
-  stato: "disponibile" | "in uso";
+  status: "available" | "in use";
   
-  constructor(tipo:"bici" | "scooter" | "monopattino", id:number, stato:"disponibile" | "in uso") {
-    this.tipo = tipo;
+  constructor(type:"bike" | "scooter" | "moped", id:number, status:"available" | "in use") {
+    this.type = type;
     this.id = id;
-    this.stato = stato;
+    this.status = status;
   }
 
-  assegnaUtente(utente: IUtente): void {
-    if (this.stato === "disponibile") {
-      console.log(`${utente.nome} ${utente.cognome} ha prenotato ${this.tipo} ID: ${this.id}`);
-      this.stato = "in uso";  
+  assignUser(user: IUser): void {
+    if (this.status === "available") {
+      console.log(`${user.name} ${user.surname} reserved ${this.type} ID: ${this.id}`);
+      this.status = "in use";  
     } else {
-      console.log(`${this.tipo} ${this.id} non disponibile`)
+      console.log(`${this.type} ${this.id} not available`)
     }
-    
   }
 }
 
-class Utente implements IUtente {
-  nome: string;
-  cognome: string;
+class User implements IUser {
+  name: string;
+  surname: string;
   email: string;
-  pagamento: string;
-  constructor(  nome: string, cognome: string, email: string, pagamento: string) {
-  this.nome = nome;
-  this.cognome = cognome;
+  payment: string;
+  constructor(  name: string, surname: string, email: string, payment: string) {
+  this.name = name;
+  this.surname = surname;
   this.email = email;
-  this.pagamento = pagamento;    
+  this.payment = payment;    
   }
 
- prenotaMezzo(mezzo: IMezzo): void {
-  mezzo.assegnaUtente(this);
+ reserveVehicle(vehicle: IVehicle): void {
+  vehicle.assignUser(this);
  }
 }
 
-class Citta implements ICitta {
-  nome:string;
-  mezziDisponibili: IMezzo[];
-  constructor(  nome:string,
-    mezziDisponibili: IMezzo[]) {
-    this.nome = nome;
-    this.mezziDisponibili = mezziDisponibili;
+class City implements ICity {
+  name:string;
+  availableVehicles: IVehicle[];
+  constructor(name:string, availableVehicle: IVehicle[]) {
+    this.name = name;
+    this.availableVehicles = availableVehicle;
   }
 
-  aggiungiMezzo(mezzo: IMezzo): void {
-    this.mezziDisponibili.push(mezzo);
-    console.log(`Il mezzo ${mezzo.tipo} ${mezzo.id} è stato aggiunto a ${this.nome}`);
+  addVehicle(vehicle: IVehicle): void {
+    this.availableVehicles.push(vehicle);
+    console.log(`The ${vehicle.type} ${vehicle.id} has been added to ${this.name}`);
   }
   
 }
 
-const bici = new Mezzo("bici", 1, "disponibile");
-const scooter = new Mezzo("scooter", 2, "disponibile");
-const monopattino = new Mezzo("monopattino", 3, "disponibile");
+const bike = new Vehicle("bike", 1, "available");
+const scooter = new Vehicle("scooter", 2, "available");
+const moped = new Vehicle("moped", 3, "available");
 
-const utente1 = new Utente("Pippo", "Farselli", "pippofarselli@gmail.com", "carta di credito");
-const utente2 = new Utente("Francesco", "Biancardo", "frankwhite@gmail.com", "conto corrente");
+const user1 = new User("Pippo", "Farselli", "pippofarselli@gmail.com", "debit card");
+const user2 = new User("Francesco", "Biancardo", "frankwhite@gmail.com", "bank account");
 
-const caserta = new Citta("Caserta", [bici, monopattino]);
+const caserta = new City("Caserta", [bike, moped]);
 
-caserta.aggiungiMezzo(scooter);
+caserta.addVehicle(scooter);
 
-utente1.prenotaMezzo(bici);
-utente2.prenotaMezzo(bici);
-utente2.prenotaMezzo(monopattino);
+user1.reserveVehicle(bike);
+user2.reserveVehicle(bike);
+user2.reserveVehicle(moped);

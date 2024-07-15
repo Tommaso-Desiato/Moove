@@ -1,50 +1,50 @@
-var Mezzo = /** @class */ (function () {
-    function Mezzo(tipo, id, stato) {
-        this.tipo = tipo;
+var Vehicle = /** @class */ (function () {
+    function Vehicle(type, id, status) {
+        this.type = type;
         this.id = id;
-        this.stato = stato;
+        this.status = status;
     }
-    Mezzo.prototype.assegnaUtente = function (utente) {
-        if (this.stato === "disponibile") {
-            console.log("".concat(utente.nome, " ").concat(utente.cognome, " ha prenotato ").concat(this.tipo, " ID: ").concat(this.id));
-            this.stato = "in uso";
+    Vehicle.prototype.assignUser = function (user) {
+        if (this.status === "available") {
+            console.log("".concat(user.name, " ").concat(user.surname, " reserved ").concat(this.type, " ID: ").concat(this.id));
+            this.status = "in use";
         }
         else {
-            console.log("".concat(this.tipo, " ").concat(this.id, " non disponibile"));
+            console.log("".concat(this.type, " ").concat(this.id, " not available"));
         }
     };
-    return Mezzo;
+    return Vehicle;
 }());
-var Utente = /** @class */ (function () {
-    function Utente(nome, cognome, email, pagamento) {
-        this.nome = nome;
-        this.cognome = cognome;
+var User = /** @class */ (function () {
+    function User(name, surname, email, payment) {
+        this.name = name;
+        this.surname = surname;
         this.email = email;
-        this.pagamento = pagamento;
+        this.payment = payment;
     }
-    Utente.prototype.prenotaMezzo = function (mezzo) {
-        mezzo.assegnaUtente(this);
+    User.prototype.reserveVehicle = function (vehicle) {
+        vehicle.assignUser(this);
     };
-    return Utente;
+    return User;
 }());
-var Citta = /** @class */ (function () {
-    function Citta(nome, mezziDisponibili) {
-        this.nome = nome;
-        this.mezziDisponibili = mezziDisponibili;
+var City = /** @class */ (function () {
+    function City(name, availableVehicle) {
+        this.name = name;
+        this.availableVehicles = availableVehicle;
     }
-    Citta.prototype.aggiungiMezzo = function (mezzo) {
-        this.mezziDisponibili.push(mezzo);
-        console.log("Il mezzo ".concat(mezzo.tipo, " ").concat(mezzo.id, " \u00E8 stato aggiunto a ").concat(this.nome));
+    City.prototype.addVehicle = function (vehicle) {
+        this.availableVehicles.push(vehicle);
+        console.log("The ".concat(vehicle.type, " ").concat(vehicle.id, " has been added to ").concat(this.name));
     };
-    return Citta;
+    return City;
 }());
-var bici = new Mezzo("bici", 1, "disponibile");
-var scooter = new Mezzo("scooter", 2, "disponibile");
-var monopattino = new Mezzo("monopattino", 3, "disponibile");
-var utente1 = new Utente("Pippo", "Farselli", "pippofarselli@gmail.com", "carta di credito");
-var utente2 = new Utente("Francesco", "Biancardo", "frankwhite@gmail.com", "conto corrente");
-var caserta = new Citta("Caserta", [bici, monopattino]);
-caserta.aggiungiMezzo(scooter);
-utente1.prenotaMezzo(bici);
-utente2.prenotaMezzo(bici);
-utente2.prenotaMezzo(monopattino);
+var bike = new Vehicle("bike", 1, "available");
+var scooter = new Vehicle("scooter", 2, "available");
+var moped = new Vehicle("moped", 3, "available");
+var user1 = new User("Pippo", "Farselli", "pippofarselli@gmail.com", "debit card");
+var user2 = new User("Francesco", "Biancardo", "frankwhite@gmail.com", "bank account");
+var caserta = new City("Caserta", [bike, moped]);
+caserta.addVehicle(scooter);
+user1.reserveVehicle(bike);
+user2.reserveVehicle(bike);
+user2.reserveVehicle(moped);
